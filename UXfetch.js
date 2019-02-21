@@ -4,6 +4,9 @@ let h1 = document.querySelector('h1');
 let count = 0;
 let body = document.querySelector('body');
 let scale = document.querySelector('.scale');
+let result = document.createElement('h3');
+let closeall = document.getElementById('closeAll')
+let donepop = document.querySelector('.donepop');
 
 let btn = document.querySelector('.start')
 btn.addEventListener('click', function(){
@@ -11,6 +14,7 @@ btn.addEventListener('click', function(){
                   .then(res => res.json())
                   .then(result => {
                     let obj = {}
+                    questions = []
                     result.results.map(mapres => {
                       mapres.incorrect_answers.push(mapres.correct_answer)
                       obj = {
@@ -29,7 +33,7 @@ btn.addEventListener('click', function(){
                 })
 
 function renderTable(){
-
+    main.removeAttribute('style')
     questions.map(el =>{
       let questionCard = document.createElement('div');
       let question = document.createElement('div');
@@ -105,10 +109,10 @@ function renderFinalResults(){
 
 
     let main = document.querySelector('.main');
-    let donepop = document.querySelector('.donepop');
+
     //console.log(donepop);
 
-    let result = document.createElement('h3');
+
     result.classList.add("poph3")
     main.style.opacity = "0";
     donepop.style.display = 'block';
@@ -125,8 +129,7 @@ function renderFinalResults(){
 
 
 
-function close (){
-  let closeall = document.getElementById('closeAll')
+function reset (){
   main.removeChild(main.firstChild);
   closeall.style.display = "none";
   btn.style.display = 'block';
@@ -134,15 +137,19 @@ function close (){
   let input = document.querySelectorAll('input');
   for (let all of input){
   all.removeAttribute("disabled");
-
+  while(main.firstChild) {
+       main.removeChild(main.firstChild)
+     }
+     result.remove()
 
    }
  }
 
 
 
-let cl = document.querySelector('.close');
-cl.addEventListener('click', close);
 
-let reset = document.querySelector('.restart');
-reset.addEventListener('click', close);
+let cl = document.querySelector('.close');
+cl.addEventListener('click', reset);
+
+let res = document.querySelector('.restart');
+res.addEventListener('click', reset);
